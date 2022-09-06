@@ -1,16 +1,7 @@
-controller.up.onEvent(ControllerButtonEvent.Repeated, function () {
-    playerSprite.y += -5
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    enemySprite.destroy()
 })
-controller.right.onEvent(ControllerButtonEvent.Repeated, function () {
-    playerSprite.x += 5
-})
-controller.down.onEvent(ControllerButtonEvent.Repeated, function () {
-    playerSprite.y += 5
-})
-controller.left.onEvent(ControllerButtonEvent.Repeated, function () {
-    playerSprite.x += -5
-})
-let playerSprite: Sprite = null
+let enemySprite: Sprite = null
 scene.setBackgroundImage(img`
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -133,7 +124,7 @@ scene.setBackgroundImage(img`
     7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
     7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
     `)
-playerSprite = sprites.create(img`
+let playerSprite = sprites.create(img`
     .............ccfff..............
     ...........ccddbcf..............
     ..........ccddbbf...............
@@ -152,7 +143,7 @@ playerSprite = sprites.create(img`
     .............fffff..............
     `, SpriteKind.Player)
 playerSprite.setPosition(130, 90)
-let enemySprite = sprites.create(img`
+enemySprite = sprites.create(img`
     . . . . c c c b b b b b . . . . 
     . . c c b 4 4 4 4 4 4 b b b . . 
     . c c 4 4 4 4 4 5 4 4 4 4 b c . 
@@ -171,3 +162,18 @@ let enemySprite = sprites.create(img`
     . . . c c c c c e e e e e . . . 
     `, SpriteKind.Enemy)
 enemySprite.setPosition(10, 90)
+controller.moveSprite(playerSprite, 50, 50)
+forever(function () {
+    if (playerSprite.x < 0) {
+        playerSprite.x = 150
+    }
+    if (playerSprite.x > 150) {
+        playerSprite.x = 0
+    }
+    if (playerSprite.y < 0) {
+        playerSprite.y = 150
+    }
+    if (playerSprite.y > 150) {
+        playerSprite.y = 0
+    }
+})
